@@ -3,12 +3,15 @@ const sleep = require('util').promisify(setTimeout)
 const { getStats, predictionContract, getBNBPrice, checkBalance, reduceWaitingTimeByTwoBlocks, saveRound } = require("./lib")
 const { TradingViewScan, SCREENERS_ENUM, EXCHANGES_ENUM, INTERVALS_ENUM } = require("trading-view-recommends-parser-nodejs")
 
+require('dotenv').config();
+
 // Global Config
 const GLOBAL_CONFIG = {
-    BET_AMOUNT: 0.1, // in USD
+    BET_AMOUNT: 1, // in USD
     DAILY_GOAL: 20, // in USD,
     WAITING_TIME: 261000, // in Miliseconds (4.3 Minutes)
-    THRESHOLD: 50 // Minimum % of certainty of signals (50 - 100)
+    THRESHOLD: 50, // Minimum % of certainty of signals (50 - 100)
+    AMOUNT_TO_BET: 0.5
 }
 
 //Bet UP
@@ -121,6 +124,7 @@ const strategy = async (minAcurracy, epoch) => {
 
 //Check balance
 checkBalance(GLOBAL_CONFIG.AMOUNT_TO_BET)
+getBNBPrice()
 console.log('🤗 Welcome! Waiting for next round...')
 
 //Betting

@@ -6,7 +6,7 @@ const Big = require('big.js')
 const abi = require('./abi.json')
 const fs = require('fs')
 const _ = require("lodash")
-const fetch = require('cross-fetch')
+const axios = require('axios')
 let prediction = 0
 
 const reduceWaitingTimeByTwoBlocks = (waitingTime) => {
@@ -205,11 +205,11 @@ const percentageChange = (a, b) => {
 const getBNBPrice = async () => {
     const apiUrl = "https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT"
     try {
-        const res = await fetch(apiUrl)
+        const res = await axios.get(apiUrl)
         if (res.status >= 400) {
             throw new Error("Bad response from server")
         }
-        const price = await res.json()
+        const price = res.data
         return parseFloat(price.price)
     } catch (err) {
         console.error("Unable to connect to Binance API", err)
